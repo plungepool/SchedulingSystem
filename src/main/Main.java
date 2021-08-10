@@ -25,7 +25,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         primaryStage.setTitle("Appointment Scheduling System");
-        primaryStage.setScene(new Scene(root, 700, 300));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 

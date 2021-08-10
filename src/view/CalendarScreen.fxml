@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreen">
+   <children>
+      <Label layoutX="130.0" layoutY="14.0" prefHeight="98.0" prefWidth="540.0" text="APPOINTMENTS">
+         <font>
+            <Font name="System Bold" size="69.0" />
+         </font>
+      </Label>
+        <AnchorPane layoutX="225.0" layoutY="158.0" minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="284.0" />
+      <TabPane layoutX="12.0" layoutY="106.0" prefHeight="383.0" prefWidth="778.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="By Month">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="288.0" prefWidth="778.0">
+                     <children>
+                        <TableView layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
+                          <columns>
+                            <TableColumn prefWidth="40.0" text="ID" />
+                            <TableColumn prefWidth="70.0" text="Title" />
+                              <TableColumn prefWidth="70.0" text="Decription" />
+                              <TableColumn prefWidth="70.0" text="Location" />
+                              <TableColumn prefWidth="70.0" text="Contact" />
+                              <TableColumn prefWidth="65.0" text="Type" />
+                              <TableColumn prefWidth="70.0" text="Start" />
+                              <TableColumn prefWidth="70.0" text="End" />
+                              <TableColumn prefWidth="65.0" text="Customer ID" />
+                          </columns>
+                        </TableView>
+                        <ComboBox layoutX="7.0" layoutY="14.0" prefWidth="150.0" visibleRowCount="8">
+                            <items>
+                            </items>
+                        </ComboBox>
+                        <Button layoutX="171.0" layoutY="308.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="222.0" layoutY="308.0" mnemonicParsing="false" text="Modify" />
+                        <Button layoutX="289.0" layoutY="308.0" mnemonicParsing="false" text="Delete" />
+                        <Button layoutX="723.0" layoutY="308.0" mnemonicParsing="false" text="Back" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="By Week">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
+                           <columns>
+                              <TableColumn prefWidth="40.0" text="ID" />
+                              <TableColumn prefWidth="70.0" text="Title" />
+                              <TableColumn prefWidth="70.0" text="Decription" />
+                              <TableColumn prefWidth="70.0" text="Location" />
+                              <TableColumn prefWidth="70.0" text="Contact" />
+                              <TableColumn prefWidth="65.0" text="Type" />
+                              <TableColumn prefWidth="70.0" text="Start" />
+                              <TableColumn prefWidth="70.0" text="End" />
+                              <TableColumn prefWidth="65.0" text="Customer ID" />
+                           </columns>
+                        </TableView>
+                        <ComboBox layoutX="7.0" layoutY="14.0" prefWidth="150.0" visibleRowCount="8">
+                            <items>
+                            </items>
+                         </ComboBox>
+                        <Button layoutX="171.0" layoutY="308.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="222.0" layoutY="308.0" mnemonicParsing="false" text="Modify" />
+                        <Button layoutX="289.0" layoutY="308.0" mnemonicParsing="false" text="Delete" />
+                        <Button layoutX="723.0" layoutY="309.0" mnemonicParsing="false" text="Back" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

@@ -11,9 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Countries;
+import utils.DBConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -58,9 +63,23 @@ public class LoginScreen implements Initializable {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        if ((Objects.equals(username, "test")) && (Objects.equals(password, "test"))) {
-            toMainScreen(actionEvent);
-        } else {
+        try {
+            String sql = "SELECT User_ID FROM users WHERE User_Name = \"" + username + "\" AND Password = \"" + password + "\"";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+
+            if (rs.getInt("User_ID") > 0) {
+                toMainScreen(actionEvent);
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle(msg.getString("errorTitle"));
+                error.setHeaderText(msg.getString("errorHeader"));
+                error.setContentText(msg.getString("errorContent"));
+                error.showAndWait();
+            }
+        }
+        catch (SQLException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle(msg.getString("errorTitle"));
             error.setHeaderText(msg.getString("errorHeader"));

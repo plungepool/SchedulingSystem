@@ -1,7 +1,9 @@
 package main;
 
         import javafx.application.Application;
+        import javafx.event.ActionEvent;
         import javafx.fxml.FXMLLoader;
+        import javafx.scene.Node;
         import javafx.scene.Parent;
         import javafx.scene.Scene;
         import javafx.stage.Stage;
@@ -23,8 +25,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         addTestData();
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
-        primaryStage.setTitle("Appointment Scheduling System");
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/LoginScreen.fxml")));
+        primaryStage.setTitle("SchedulingSystem");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
@@ -36,4 +38,5 @@ public class Main extends Application {
         launch(args);
         DBConnection.closeConnection();
     }
+
 }

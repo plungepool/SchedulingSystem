@@ -27,7 +27,6 @@ public class DBCountries {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
         return countriesList;
     }
 

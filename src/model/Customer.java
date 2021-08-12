@@ -2,10 +2,14 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import utils.DBConnection;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /** This class represents an individual customer.*/
 public class Customer {
-    private ObservableList<Appointment> associatedAppointments = FXCollections.observableArrayList();
     private int id;
     private String name;
     private String address;
@@ -13,8 +17,7 @@ public class Customer {
     private String phone;
     private int division_id;
 
-    public Customer(ObservableList<Appointment> associatedAppointments, int id, String name, String address, String postalcode, String phone, int division_id) {
-        this.associatedAppointments = associatedAppointments;
+    public Customer(int id, String name, String address, String postalcode, String phone, int division_id) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -71,20 +74,30 @@ public class Customer {
         this.division_id = division_id;
     }
 
-    public void addAssociatedAppointment(Appointment appointment) {
-        associatedAppointments.add(appointment);
-    }
+    public static ObservableList<Customer> getAllCustomers() {
+        ObservableList<Customer> customersList = FXCollections.observableArrayList();
 
-    public boolean deleteAssociatedAppointment(Appointment selectedAssociatedAppointment) {
-        if (associatedAppointments.contains(selectedAssociatedAppointment)) {
-            associatedAppointments.remove(selectedAssociatedAppointment);
-            return true;
+        try {
+            String sql = "SELECT * FROM customers";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("Customer_ID");
+                String name = rs.getString("Customer_Name");
+                String address = rs.getString("Address");
+                String postalcode = rs.getString("Postal_Code");
+                String phone = rs.getString("Phone");
+                int division_id = rs.getInt("Division_ID");
+
+                Customer c = new Customer(id, name, address, postalcode, phone, division_id);
+                customersList.add(c);
+            }
         }
-        else
-            return false;
-    }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    public ObservableList<Appointment> getAllAssociatedAppointments() {
-        return associatedAppointments;
+        return customersList;
     }
 }

@@ -97,7 +97,31 @@ public class Customer {
         catch (SQLException e) {
             e.printStackTrace();
         }
-
         return customersList;
+    }
+
+    public static void addNewCustomer(Customer newCustomer){
+        try {
+            String sql = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
+                    "VALUES (" + newCustomer.getId() + ", '" + newCustomer.getName() + "', '" + newCustomer.getAddress() + "', '" +
+                    newCustomer.getPostalcode() + "', '" + newCustomer.getPhone() + "', " + newCustomer.getDivision_id() + ")";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteCustomer(Customer itemToDelete) {
+        try {
+            int customerIdToDelete = itemToDelete.getId();
+            String sql = "DELETE FROM customers WHERE Customer_ID = " + customerIdToDelete;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

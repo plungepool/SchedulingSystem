@@ -28,4 +28,21 @@ public class DBFirstLevelDivisions {
         }
         return divisionsList;
     }
+
+    public static int getDivisionIdFromDivisionName(String divisionName) {
+        int divisionID = 0;
+        try {
+            String sql = "SELECT Division_ID FROM first_level_divisions WHERE Division = '" + divisionName + "'";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                divisionID = rs.getInt("Division_ID");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return divisionID;
+    }
 }

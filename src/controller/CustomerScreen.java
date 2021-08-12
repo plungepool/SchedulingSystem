@@ -60,6 +60,32 @@ public class CustomerScreen implements Initializable {
         stage.show();
     }
 
+    public void onModifyButton(ActionEvent actionEvent) {
+    }
+
+    public void onDeleteButton(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Customer");
+        alert.setHeaderText("Are you sure you want to delete this customer?");
+        alert.setContentText("Press ok to confirm.");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK){
+            try {
+                Customer itemToDelete = (Customer) customerTable.getSelectionModel().getSelectedItem();
+                Customer.deleteCustomer(itemToDelete);
+                customerTable.setItems(Customer.getAllCustomers());
+            }
+            catch (Exception e) {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Error: Customer could not be deleted.");
+                error.setContentText("Make sure a customer has been selected and try again.");
+                error.showAndWait();
+            }
+        }
+    }
+
 //    public void toModifyPartScreen(ActionEvent actionEvent) throws IOException {
 //        try {
 //            ModifyPartScreen.itemToModify = PartsTable.getSelectionModel().getSelectedItem();
@@ -78,27 +104,5 @@ public class CustomerScreen implements Initializable {
 //            error.showAndWait();
 //        }
 //    }
-//
-//    public void onDeletePartButton(ActionEvent actionEvent) {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Delete Part");
-//        alert.setHeaderText("Are you sure you want to delete this part?");
-//        alert.setContentText("Press ok to confirm.");
-//        Optional<ButtonType> result = alert.showAndWait();
-//        if (result.get() == ButtonType.OK){
-//            try {
-//                Part itemToDelete = PartsTable.getSelectionModel().getSelectedItem();
-//                Inventory.deletePart(itemToDelete);
-//                PartsSearch.setText("");
-//                getPartResultsHandler(actionEvent);
-//            }
-//            catch (Exception e) {
-//                Alert error = new Alert(Alert.AlertType.ERROR);
-//                error.setTitle("Error");
-//                error.setHeaderText("Error: Part could not be deleted.");
-//                error.setContentText("Press ok to continue.");
-//                error.showAndWait();
-//            }
-//        }
-//    }
+
 }

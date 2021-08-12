@@ -22,8 +22,8 @@
         </columns>
       </TableView>
       <Button fx:id="addButton" layoutX="75.0" layoutY="450.0" mnemonicParsing="false" onAction="#toAddCustomerScreen" text="Add" />
-      <Button fx:id="modifyButton" layoutX="126.0" layoutY="450.0" mnemonicParsing="false" text="Modify" />
-      <Button fx:id="deleteButton" layoutX="194.0" layoutY="450.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="modifyButton" layoutX="126.0" layoutY="450.0" mnemonicParsing="false" onAction="#onModifyButton" text="Modify" />
+      <Button fx:id="deleteButton" layoutX="194.0" layoutY="450.0" mnemonicParsing="false" onAction="#onDeleteButton" text="Delete" />
       <Button fx:id="backButton" layoutX="685.0" layoutY="450.0" mnemonicParsing="false" onAction="#onBackButton" text="Back" />
    </children>
 </AnchorPane>

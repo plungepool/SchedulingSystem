@@ -60,7 +60,23 @@ public class CustomerScreen implements Initializable {
         stage.show();
     }
 
-    public void onModifyButton(ActionEvent actionEvent) {
+    public void onModifyButton(ActionEvent actionEvent) throws IOException {
+        try {
+            CustomerModifyScreen.itemToModify = (Customer) customerTable.getSelectionModel().getSelectedItem();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CustomerModifyScreen.fxml")));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 500, 500);
+            stage.setTitle("Modify Customer");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Error: No customer selected.");
+            error.setContentText("Press ok to return.");
+            error.showAndWait();
+        }
     }
 
     public void onDeleteButton(ActionEvent actionEvent) {

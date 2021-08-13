@@ -25,8 +25,7 @@ import java.util.ResourceBundle;
 
 import static utils.DBFirstLevelDivisions.getDivisionIdFromDivisionName;
 
-public class CustomerAddScreen implements Initializable {
-
+public class CustomerModifyScreen implements Initializable {
     public TextField idField;
     public TextField nameField;
     public TextField postalField;
@@ -35,6 +34,8 @@ public class CustomerAddScreen implements Initializable {
     public ComboBox countryCombo;
     public ComboBox divisionCombo;
 
+    public static Customer itemToModify;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -42,6 +43,22 @@ public class CustomerAddScreen implements Initializable {
             countryNames.add(c.getName());
         }
         countryCombo.setItems(countryNames);
+
+        idField.setText(String.valueOf(itemToModify.getId()));
+        nameField.setText(String.valueOf(itemToModify.getName()));
+        postalField.setText(String.valueOf(itemToModify.getPostalcode()));
+        phoneField.setText(String.valueOf(itemToModify.getPhone()));
+        addressField.setText(String.valueOf(itemToModify.getAddress()));
+
+        String countryName = DBFirstLevelDivisions.getCountryNameFromDivisionID(itemToModify.getDivision_id());
+        countryCombo.setValue(countryName);
+
+        ObservableList<String> divisionNames = FXCollections.observableArrayList();
+        for (FirstLevelDivisions f : DBFirstLevelDivisions.getAllDivisionsFromCountryID(DBFirstLevelDivisions.getCountryIdFromCountryName(countryName))) {
+            divisionNames.add(f.getName());
+        }
+        divisionCombo.setItems(divisionNames);
+        divisionCombo.setValue(DBFirstLevelDivisions.getDivisionNameFromDivisionID(itemToModify.getDivision_id()));
     }
 
     public void onCountrySelect(ActionEvent actionEvent) {
@@ -67,21 +84,7 @@ public class CustomerAddScreen implements Initializable {
         divisionCombo.setItems(divisionNames);
     }
 
-    private int findNewCustomerID(int newID) {
-        ObservableList<Customer> allCustomers = Customer.getAllCustomers();
-        for (Customer c : allCustomers) {
-            if (c.getId() == newID) {
-                ++newID;
-                findNewCustomerID(newID);
-            }
-        }
-        return newID;
-    }
-
     public void onSaveButton(ActionEvent actionEvent) {
-        int newID = 1;
-        newID = findNewCustomerID(newID);
-
         if (nameField.getText() == null || addressField.getText() == null || postalField.getText() == null || phoneField.getText() == null || divisionCombo.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
@@ -93,12 +96,13 @@ public class CustomerAddScreen implements Initializable {
             try {
                 int divisionID = getDivisionIdFromDivisionName(divisionCombo.getValue().toString());
                 Customer newCustomer = new Customer(
-                        newID,
+                        Integer.parseInt(idField.getText()),
                         nameField.getText(),
                         addressField.getText(),
                         postalField.getText(),
                         phoneField.getText(),
                         divisionID);
+                Customer.deleteCustomer(itemToModify);
                 Customer.addNewCustomer(newCustomer);
                 onBackButton(actionEvent);
             } catch (RuntimeException | IOException e) {
@@ -119,5 +123,4 @@ public class CustomerAddScreen implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
 }

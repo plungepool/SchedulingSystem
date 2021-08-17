@@ -32,5 +32,13 @@ public class MainScreen implements Initializable {
         stage.show();
     }
 
+    public void toAppointmentsScreen(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CalendarScreen.fxml")));
+        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 800, 500);
+        stage.setTitle("SchedulingSystem");
+        stage.setScene(scene);
+        stage.show();
+    }
 }
 

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerScreen">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CalendarScreen">
    <children>
       <Label layoutX="130.0" layoutY="14.0" prefHeight="98.0" prefWidth="540.0" text="APPOINTMENTS">
          <font>
@@ -18,27 +18,27 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="288.0" prefWidth="778.0">
                      <children>
-                        <TableView layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
+                        <TableView fx:id="monthlyAppointmentsTable" layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
                           <columns>
-                            <TableColumn prefWidth="40.0" text="ID" />
-                            <TableColumn prefWidth="70.0" text="Title" />
-                              <TableColumn prefWidth="70.0" text="Decription" />
-                              <TableColumn prefWidth="70.0" text="Location" />
-                              <TableColumn prefWidth="70.0" text="Contact" />
-                              <TableColumn prefWidth="65.0" text="Type" />
-                              <TableColumn prefWidth="70.0" text="Start" />
-                              <TableColumn prefWidth="70.0" text="End" />
-                              <TableColumn prefWidth="65.0" text="Customer ID" />
+                            <TableColumn fx:id="monthlyAppointmentsTableID" prefWidth="40.0" text="ID" />
+                            <TableColumn fx:id="monthlyAppointmentsTableTitle" prefWidth="70.0" text="Title" />
+                              <TableColumn fx:id="monthlyAppointmentsTableDescription" prefWidth="70.0" text="Description" />
+                              <TableColumn fx:id="monthlyAppointmentsTableLocation" prefWidth="70.0" text="Location" />
+                              <TableColumn fx:id="monthlyAppointmentsTableContact" prefWidth="70.0" text="Contact" />
+                              <TableColumn fx:id="monthlyAppointmentsTableType" prefWidth="65.0" text="Type" />
+                              <TableColumn fx:id="monthlyAppointmentsTableStart" prefWidth="70.0" text="Start" />
+                              <TableColumn fx:id="monthlyAppointmentsTableEnd" prefWidth="70.0" text="End" />
+                              <TableColumn fx:id="monthlyAppointmentsTableCustomerID" prefWidth="65.0" text="Customer ID" />
                           </columns>
                         </TableView>
-                        <ComboBox layoutX="7.0" layoutY="14.0" prefWidth="150.0" visibleRowCount="8">
+                        <ComboBox fx:id="monthlyCombo" layoutX="7.0" layoutY="14.0" onAction="#monthlyFilterTable" prefWidth="150.0" promptText="Choose a month..." visibleRowCount="8">
                             <items>
                             </items>
                         </ComboBox>
                         <Button layoutX="171.0" layoutY="308.0" mnemonicParsing="false" text="Add" />
                         <Button layoutX="222.0" layoutY="308.0" mnemonicParsing="false" text="Modify" />
                         <Button layoutX="289.0" layoutY="308.0" mnemonicParsing="false" text="Delete" />
-                        <Button layoutX="723.0" layoutY="308.0" mnemonicParsing="false" text="Back" />
+                        <Button layoutX="723.0" layoutY="308.0" mnemonicParsing="false" onAction="#onBackButton" text="Back" />
                      </children>
                   </AnchorPane>
             </content>
@@ -47,20 +47,20 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
+                        <TableView fx:id="weeklyAppointmentsTable" layoutX="171.0" layoutY="14.0" prefHeight="280.0" prefWidth="593.0">
                            <columns>
-                              <TableColumn prefWidth="40.0" text="ID" />
-                              <TableColumn prefWidth="70.0" text="Title" />
-                              <TableColumn prefWidth="70.0" text="Decription" />
-                              <TableColumn prefWidth="70.0" text="Location" />
-                              <TableColumn prefWidth="70.0" text="Contact" />
-                              <TableColumn prefWidth="65.0" text="Type" />
-                              <TableColumn prefWidth="70.0" text="Start" />
-                              <TableColumn prefWidth="70.0" text="End" />
-                              <TableColumn prefWidth="65.0" text="Customer ID" />
+                               <TableColumn fx:id="weeklyAppointmentsTableID" prefWidth="40.0" text="ID" />
+                               <TableColumn fx:id="weeklyAppointmentsTableTitle" prefWidth="70.0" text="Title" />
+                               <TableColumn fx:id="weeklyAppointmentsTableDescription" prefWidth="70.0" text="Description" />
+                               <TableColumn fx:id="weeklyAppointmentsTableLocation" prefWidth="70.0" text="Location" />
+                               <TableColumn fx:id="weeklyAppointmentsTableContact" prefWidth="70.0" text="Contact" />
+                               <TableColumn fx:id="weeklyAppointmentsTableType" prefWidth="65.0" text="Type" />
+                               <TableColumn fx:id="weeklyAppointmentsTableStart" prefWidth="70.0" text="Start" />
+                               <TableColumn fx:id="weeklyAppointmentsTableEnd" prefWidth="70.0" text="End" />
+                               <TableColumn fx:id="weeklyAppointmentsTableCustomerID" prefWidth="65.0" text="Customer ID" />
                            </columns>
                         </TableView>
-                        <ComboBox layoutX="7.0" layoutY="14.0" prefWidth="150.0" visibleRowCount="8">
+                        <ComboBox fx:id="weeklyCombo" layoutX="7.0" layoutY="14.0" onAction="#weeklyFilterTable" prefWidth="150.0" promptText="Choose a week..." visibleRowCount="8">
                             <items>
                             </items>
                          </ComboBox>

@@ -113,10 +113,6 @@ public class Customer {
         }
     }
 
-    public static void updateCustomer(Customer itemToUpdate) {
-
-    }
-
     public static void deleteCustomer(Customer itemToDelete) {
         try {
             int customerIdToDelete = itemToDelete.getId();

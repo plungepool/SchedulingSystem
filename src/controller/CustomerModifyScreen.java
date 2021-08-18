@@ -31,8 +31,8 @@ public class CustomerModifyScreen implements Initializable {
     public TextField postalField;
     public TextField phoneField;
     public TextField addressField;
-    public ComboBox countryCombo;
-    public ComboBox divisionCombo;
+    public ComboBox<String> countryCombo;
+    public ComboBox<String> divisionCombo;
 
     public static Customer itemToModify;
 

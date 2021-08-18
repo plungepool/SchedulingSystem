@@ -114,28 +114,33 @@ public class CalendarScreen implements Initializable {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CalendarAddScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 500, 500);
-        stage.setTitle("Add Customer");
+        stage.setTitle("Add Appointment");
         stage.setScene(scene);
         stage.show();
     }
 
     public void onModifyButton(ActionEvent actionEvent) {
-//        try {
-//            CustomerModifyScreen.itemToModify = (Customer) customerTable.getSelectionModel().getSelectedItem();
-//            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CustomerModifyScreen.fxml")));
-//            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-//            Scene scene = new Scene(root, 500, 500);
-//            stage.setTitle("Modify Customer");
-//            stage.setScene(scene);
-//            stage.show();
-//        }
-//        catch (Exception e) {
-//            Alert error = new Alert(Alert.AlertType.ERROR);
-//            error.setTitle("Error");
-//            error.setHeaderText("Error: No customer selected.");
-//            error.setContentText("Press ok to return.");
-//            error.showAndWait();
-//        }
+        try {
+            if (monthlyAppointmentsTable.getSelectionModel().getSelectedItem() != null) {
+                CalendarModifyScreen.itemToModify = monthlyAppointmentsTable.getSelectionModel().getSelectedItem();
+            }
+            else if (weeklyAppointmentsTable.getSelectionModel().getSelectedItem() != null) {
+                CalendarModifyScreen.itemToModify = weeklyAppointmentsTable.getSelectionModel().getSelectedItem();
+            }
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CalendarModifyScreen.fxml")));
+            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 500, 500);
+            stage.setTitle("Modify Appointment");
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (Exception e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Error: No appointment selected.");
+            error.setContentText("Press ok to return.");
+            error.showAndWait();
+        }
     }
 
     public void onDeleteButton(ActionEvent actionEvent) {
@@ -147,18 +152,30 @@ public class CalendarScreen implements Initializable {
 
         if (result.get() == ButtonType.OK){
             try {
+                String aptType = "";
+                String aptId = "";
                 if (monthlyAppointmentsTable.getSelectionModel().getSelectedItem() != null) {
                     Appointment itemToDelete = monthlyAppointmentsTable.getSelectionModel().getSelectedItem();
+                    aptType = itemToDelete.getType();
+                    aptId = String.valueOf(itemToDelete.getId());
                     Appointment.deleteAppointment(itemToDelete);
                 }
                 else if (weeklyAppointmentsTable.getSelectionModel().getSelectedItem() != null) {
                     Appointment itemToDelete = weeklyAppointmentsTable.getSelectionModel().getSelectedItem();
+                    aptType = itemToDelete.getType();
+                    aptId = String.valueOf(itemToDelete.getId());
                     Appointment.deleteAppointment(itemToDelete);
                 }
                 monthlyAppointmentsTable.setItems(Appointment.getAllAppointments());
                 monthlyFilterTable();
                 weeklyAppointmentsTable.setItems(Appointment.getAllAppointments());
                 weeklyFilterTable();
+
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                deleted.setTitle("Success");
+                deleted.setHeaderText(aptType + " appointment ID #" + aptId + " has been deleted.");
+                deleted.setContentText("Press ok to continue.");
+                deleted.showAndWait();
             }
             catch (Exception e) {
                 Alert error = new Alert(Alert.AlertType.ERROR);

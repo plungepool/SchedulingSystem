@@ -13,21 +13,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Appointment;
-import model.Contacts;
-import model.Customer;
+import model.*;
 import utils.DBContacts;
 import utils.DBCustomer;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CalendarAddScreen implements Initializable {
+public class CalendarModifyScreen implements Initializable {
     public TextField idField;
     public TextField titleField;
     public TextField descriptionField;
@@ -38,6 +37,8 @@ public class CalendarAddScreen implements Initializable {
     public DatePicker datePicker;
     public TextField startField;
     public TextField endField;
+
+    public static Appointment itemToModify;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,6 +53,23 @@ public class CalendarAddScreen implements Initializable {
             customerNames.add(cus.getName());
         }
         customerCombo.setItems(customerNames);
+
+        idField.setText(String.valueOf(itemToModify.getId()));
+        titleField.setText(String.valueOf(itemToModify.getTitle()));
+        descriptionField.setText(String.valueOf(itemToModify.getDescription()));
+        locationField.setText(String.valueOf(itemToModify.getLocation()));
+        typeField.setText(String.valueOf(itemToModify.getType()));
+
+        String contactName = DBContacts.getContactNameFromContactID(itemToModify.getContact_id());
+        contactCombo.setValue(contactName);
+
+        String customerName = DBCustomer.getCustomerNameFromCustomerID(itemToModify.getCustomer_id());
+        customerCombo.setValue(customerName);
+
+        datePicker.setValue(itemToModify.getStart().toLocalDateTime().toLocalDate());
+
+        startField.setText(itemToModify.getStart().toString().substring(11, 19));
+        endField.setText(itemToModify.getEnd().toString().substring(11, 19));
     }
 
     public void onSaveButton(ActionEvent actionEvent) {
@@ -84,18 +102,18 @@ public class CalendarAddScreen implements Initializable {
                         int contactID = DBContacts.getContactIdFromContactName(contactCombo.getValue());
                         int customerID = DBCustomer.getCustomerIdFromCustomerName(customerCombo.getValue());
                         int userID = 1;
-                Appointment newAppointment = new Appointment(
-                        0,
-                        titleField.getText(),
-                        descriptionField.getText(),
-                        locationField.getText(),
-                        typeField.getText(),
-                        Timestamp.valueOf(ts),
-                        Timestamp.valueOf(te),
-                        customerID,
-                        userID,
-                        contactID);
-                Appointment.addNewAppointment(newAppointment);
+                        Appointment newAppointment = new Appointment(
+                                itemToModify.getId(),
+                                titleField.getText(),
+                                descriptionField.getText(),
+                                locationField.getText(),
+                                typeField.getText(),
+                                Timestamp.valueOf(ts),
+                                Timestamp.valueOf(te),
+                                customerID,
+                                userID,
+                                contactID);
+                        Appointment.updateAppointment(newAppointment, itemToModify);
                         onBackButton(actionEvent);
                     } catch (RuntimeException | IOException e) {
                         Alert error = new Alert(Alert.AlertType.ERROR);

@@ -67,21 +67,7 @@ public class CustomerAddScreen implements Initializable {
         divisionCombo.setItems(divisionNames);
     }
 
-    private int findNewCustomerID(int newID) {
-        ObservableList<Customer> allCustomers = Customer.getAllCustomers();
-        for (Customer c : allCustomers) {
-            if (c.getId() == newID) {
-                ++newID;
-                findNewCustomerID(newID);
-            }
-        }
-        return newID;
-    }
-
     public void onSaveButton(ActionEvent actionEvent) {
-        int newID = 1;
-        newID = findNewCustomerID(newID);
-
         if (nameField.getText() == null || addressField.getText() == null || postalField.getText() == null || phoneField.getText() == null || divisionCombo.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
@@ -93,7 +79,7 @@ public class CustomerAddScreen implements Initializable {
             try {
                 int divisionID = getDivisionIdFromDivisionName(divisionCombo.getValue().toString());
                 Customer newCustomer = new Customer(
-                        newID,
+                        0,
                         nameField.getText(),
                         addressField.getText(),
                         postalField.getText(),

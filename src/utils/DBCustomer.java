@@ -23,4 +23,21 @@ public class DBCustomer {
         }
         return customerID;
     }
+
+    public static String getCustomerNameFromCustomerID(int customerID) {
+        String customerName = "";
+        try {
+            String sql = "SELECT Customer_Name FROM customers WHERE Customer_ID = " + customerID;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                customerName = rs.getString("Customer_Name");
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerName;
+    }
 }

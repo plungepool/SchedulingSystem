@@ -10,16 +10,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
+import utils.DBConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerScreen implements Initializable {
 
-    public TableView customerTable;
+    public TableView<Customer> customerTable;
     public TableColumn customerTableID;
     public TableColumn customerTableName;
     public TableColumn customerTableAddress;
@@ -62,7 +66,7 @@ public class CustomerScreen implements Initializable {
 
     public void onModifyButton(ActionEvent actionEvent) throws IOException {
         try {
-            CustomerModifyScreen.itemToModify = (Customer) customerTable.getSelectionModel().getSelectedItem();
+            CustomerModifyScreen.itemToModify = customerTable.getSelectionModel().getSelectedItem();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CustomerModifyScreen.fxml")));
             Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 500, 500);
@@ -88,11 +92,36 @@ public class CustomerScreen implements Initializable {
 
         if (result.get() == ButtonType.OK){
             try {
-                Customer itemToDelete = (Customer) customerTable.getSelectionModel().getSelectedItem();
-                Customer.deleteCustomer(itemToDelete);
-                customerTable.setItems(Customer.getAllCustomers());
+                Customer itemToDelete = customerTable.getSelectionModel().getSelectedItem();
+
+                try {
+                    int customerID = itemToDelete.getId();
+                    int aptID = 0;
+                    String sql = "SELECT Appointment_ID FROM appointments WHERE Customer_ID = " + customerID;
+                    PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+                    ResultSet rs = ps.executeQuery();
+
+                    while (rs.next()) {
+                        aptID = rs.getInt("Appointment_ID");
+                    }
+
+                    if (aptID != 0) {
+                        Alert error = new Alert(Alert.AlertType.ERROR);
+                        error.setTitle("Error");
+                        error.setHeaderText("Error: Customer could not be deleted.");
+                        error.setContentText("All appointments associated with this customer must be deleted first.");
+                        error.showAndWait();
+                    }
+                    else {
+                        Customer.deleteCustomer(itemToDelete);
+                        customerTable.setItems(Customer.getAllCustomers());
+                    }
+                }
+                catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            catch (Exception e) {
+            catch (Exception e ) {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
                 error.setHeaderText("Error: Customer could not be deleted.");

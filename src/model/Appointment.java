@@ -281,8 +281,8 @@ public class Appointment {
 
     public static void addNewAppointment(Appointment newAppointment){
         try {
-            String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
-                    "VALUES (" + newAppointment.getId() + ", '" + newAppointment.getTitle() + "', '" + newAppointment.getDescription() + "', '" +
+            String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES ('" + newAppointment.getTitle() + "', '" + newAppointment.getDescription() + "', '" +
                     newAppointment.getLocation() + "', '" + newAppointment.getType() + "', '" + newAppointment.getStart() + "', '" +
                     newAppointment.getEnd() + "', " + newAppointment.getCustomer_id() + ", " + newAppointment.getUser_id() + ", " +
                     newAppointment.getContact_id() + ")";
@@ -294,6 +294,21 @@ public class Appointment {
         }
     }
 
+    public static void updateAppointment(Appointment newAppointment, Appointment itemToModify){
+        try {
+            String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES (" + itemToModify.getId() + ", '" + newAppointment.getTitle() + "', '" + newAppointment.getDescription() + "', '" +
+                    newAppointment.getLocation() + "', '" + newAppointment.getType() + "', '" + newAppointment.getStart() + "', '" +
+                    newAppointment.getEnd() + "', " + newAppointment.getCustomer_id() + ", " + newAppointment.getUser_id() + ", " +
+                    newAppointment.getContact_id() + ")";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            deleteAppointment(itemToModify);
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void deleteAppointment(Appointment itemToDelete) {
         try {

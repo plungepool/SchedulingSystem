@@ -235,7 +235,7 @@ public class Appointment {
         return appointmentsList;
     }
 
-    public static ObservableList<Appointment> filterByWeekh(String week) {
+    public static ObservableList<Appointment> filterByWeek(String week) {
         Locale locale = Locale.getDefault();
         DayOfWeek firstDayOfWeek = WeekFields.of(locale).getFirstDayOfWeek();
         DayOfWeek lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().length) + 1);
@@ -244,12 +244,10 @@ public class Appointment {
 
         switch(week) {
             case "THIS WEEK":
-                startFilter = LocalDateTime.of(2021, Month.JANUARY, 1, 0, 0, 0);
-                endFilter = LocalDateTime.of(2021, Month.JANUARY, 31, 23, 59, 59);
                 break;
             case "NEXT WEEK":
-                startFilter = LocalDateTime.of(2021, Month.FEBRUARY, 1, 0, 0, 0);
-                endFilter = LocalDateTime.of(2021, Month.FEBRUARY, 28, 23, 23, 59);
+                startFilter = startFilter.plusDays(7);
+                endFilter = endFilter.plusDays(7);
                 break;
         }
 
@@ -281,32 +279,31 @@ public class Appointment {
         return appointmentsList;
     }
 
-//    public static void addNewCustomer(Customer newCustomer){
-//        try {
-//            String sql = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
-//                    "VALUES (" + newCustomer.getId() + ", '" + newCustomer.getName() + "', '" + newCustomer.getAddress() + "', '" +
-//                    newCustomer.getPostalcode() + "', '" + newCustomer.getPhone() + "', " + newCustomer.getDivision_id() + ")";
-//            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
-//            ps.executeUpdate();
-//        }
-//        catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static void updateCustomer(Customer itemToUpdate) {
-//
-//    }
-//
-//    public static void deleteCustomer(Customer itemToDelete) {
-//        try {
-//            int customerIdToDelete = itemToDelete.getId();
-//            String sql = "DELETE FROM customers WHERE Customer_ID = " + customerIdToDelete;
-//            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
-//            ps.executeUpdate();
-//        }
-//        catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void addNewAppointment(Appointment newAppointment){
+        try {
+            String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES (" + newAppointment.getId() + ", '" + newAppointment.getTitle() + "', '" + newAppointment.getDescription() + "', '" +
+                    newAppointment.getLocation() + "', '" + newAppointment.getType() + "', '" + newAppointment.getStart() + "', '" +
+                    newAppointment.getEnd() + "', " + newAppointment.getCustomer_id() + ", " + newAppointment.getUser_id() + ", " +
+                    newAppointment.getContact_id() + ")";
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void deleteAppointment(Appointment itemToDelete) {
+        try {
+            int appointmentIdToDelete = itemToDelete.getId();
+            String sql = "DELETE FROM appointments WHERE Appointment_ID = " + appointmentIdToDelete;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ps.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

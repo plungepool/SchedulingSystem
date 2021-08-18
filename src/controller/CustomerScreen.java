@@ -101,24 +101,4 @@ public class CustomerScreen implements Initializable {
             }
         }
     }
-
-//    public void toModifyPartScreen(ActionEvent actionEvent) throws IOException {
-//        try {
-//            ModifyPartScreen.itemToModify = PartsTable.getSelectionModel().getSelectedItem();
-//            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/ModifyPartScreen.fxml")));
-//            Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-//            Scene scene = new Scene(root, 600, 400);
-//            stage.setTitle("Modify Part");
-//            stage.setScene(scene);
-//            stage.show();
-//        }
-//        catch (Exception e) {
-//            Alert error = new Alert(Alert.AlertType.ERROR);
-//            error.setTitle("Error");
-//            error.setHeaderText("Error: No part selected.");
-//            error.setContentText("Press ok to return.");
-//            error.showAndWait();
-//        }
-//    }
-
 }

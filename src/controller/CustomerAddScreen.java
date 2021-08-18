@@ -32,8 +32,8 @@ public class CustomerAddScreen implements Initializable {
     public TextField postalField;
     public TextField phoneField;
     public TextField addressField;
-    public ComboBox countryCombo;
-    public ComboBox divisionCombo;
+    public ComboBox<String> countryCombo;
+    public ComboBox<String> divisionCombo;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

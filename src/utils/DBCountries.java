@@ -1,6 +1,5 @@
 package utils;
 
-import utils.DBConnection;
 import model.Countries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

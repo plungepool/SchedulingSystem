@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Appointment;
 import utils.DBConnection;
 
 import java.io.IOException;
@@ -18,8 +21,10 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -69,6 +74,30 @@ public class LoginScreen implements Initializable {
             rs.next();
 
             if (rs.getInt("User_ID") > 0) {
+                ObservableList<Appointment> customerAppointments = FXCollections.observableArrayList();
+                customerAppointments.addAll(Appointment.getAllAppointments());
+                LocalDateTime currentTime = LocalDateTime.now();
+                boolean appointmentSoonFlag = false;
+                for (Appointment a : customerAppointments) {
+                    LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
+                    long timeDifference = ChronoUnit.MINUTES.between(currentTime, thisAppointmentStart);
+                    if (timeDifference > 0 && timeDifference <= 15) {
+                        appointmentSoonFlag = true;
+                        Alert appointmentSoon = new Alert(Alert.AlertType.INFORMATION);
+                        appointmentSoon.setTitle("Alert");
+                        appointmentSoon.setHeaderText("Appointment soon: ID #" + a.getId() + ", on " + thisAppointmentStart.toString().substring(0, 10) + " at " + thisAppointmentStart.toString().substring(11));
+                        appointmentSoon.setContentText("Press ok to continue.");
+                        appointmentSoon.showAndWait();
+                        break;
+                    }
+                }
+                if (!appointmentSoonFlag) {
+                    Alert noAppointment = new Alert(Alert.AlertType.INFORMATION);
+                    noAppointment.setTitle("Alert");
+                    noAppointment.setHeaderText("No appointments starting soon.");
+                    noAppointment.setContentText("Press ok to continue.");
+                    noAppointment.showAndWait();
+                }
                 toMainScreen(actionEvent);
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);

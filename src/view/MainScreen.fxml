@@ -20,7 +20,7 @@
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Button>
-      <Button alignment="CENTER" layoutX="532.0" layoutY="216.0" mnemonicParsing="false" prefHeight="175.0" prefWidth="225.0" text="VIEW SYSYEM REPORTS" textAlignment="CENTER" wrapText="true">
+      <Button alignment="CENTER" layoutX="532.0" layoutY="216.0" mnemonicParsing="false" onAction="#toReportsScreen" prefHeight="175.0" prefWidth="225.0" text="VIEW SYSYEM REPORTS" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

@@ -130,19 +130,21 @@ public class CalendarModifyScreen implements Initializable {
                         LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
                         LocalDateTime thisAppointmentEnd = a.getEnd().toLocalDateTime();
 
-                        if((newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
-                                || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
-                                || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
-                                || (thisAppointmentStart.isAfter(newAppointmentStart) && thisAppointmentEnd.isBefore(newAppointmentEnd))
-                                || newAppointmentStart.equals(thisAppointmentStart) || newAppointmentEnd.equals(thisAppointmentEnd)
-                                || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart)){
-                            overlapFlag = true;
-                            Alert error = new Alert(Alert.AlertType.ERROR);
-                            error.setTitle("Error");
-                            error.setHeaderText("Error: Appointment overlaps an existing appointment for this customer.");
-                            error.setContentText("Please check schedule and try again.");
-                            error.showAndWait();
-                            break;
+                        if (a.getId() != itemToModify.getId()) {
+                            if((newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
+                                    || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
+                                    || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
+                                    || (thisAppointmentStart.isAfter(newAppointmentStart) && thisAppointmentEnd.isBefore(newAppointmentEnd))
+                                    || newAppointmentStart.equals(thisAppointmentStart) || newAppointmentEnd.equals(thisAppointmentEnd)
+                                    || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart)){
+                                overlapFlag = true;
+                                Alert error = new Alert(Alert.AlertType.ERROR);
+                                error.setTitle("Error");
+                                error.setHeaderText("Error: Appointment overlaps an existing appointment for this customer.");
+                                error.setContentText("Please check schedule and try again.");
+                                error.showAndWait();
+                                break;
+                            }
                         }
                     }
                     if (!overlapFlag) {

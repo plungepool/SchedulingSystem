@@ -149,6 +149,36 @@ public class Appointment {
         return appointmentsList;
     }
 
+    public static ObservableList<Appointment> getAllAppointmentsByCustomer(int customerID) {
+        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT * FROM appointments WHERE Customer_ID = " + customerID;
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String type = rs.getString("Type");
+                Timestamp start = rs.getTimestamp("Start");
+                Timestamp end = rs.getTimestamp("End");
+                int customer_id = rs.getInt("Customer_ID");
+                int user_id = rs.getInt("User_ID");
+                int contact_id = rs.getInt("Contact_ID");
+
+                Appointment a = new Appointment(id, title, description, location, type, start, end, customer_id, user_id, contact_id);
+                appointmentsList.add(a);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointmentsList;
+    }
+
     public static ObservableList<Appointment> filterByMonth(String month) {
         LocalDateTime startFilter;
         LocalDateTime endFilter;

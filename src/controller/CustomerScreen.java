@@ -11,7 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
 import utils.DBConnection;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -21,6 +20,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Controller for customers screen. */
 public class CustomerScreen implements Initializable {
 
     public TableView<Customer> customerTable;
@@ -35,6 +35,7 @@ public class CustomerScreen implements Initializable {
     public Button deleteButton;
     public Button backButton;
 
+    /** Fills tableview with customers from database.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerTable.setItems(Customer.getAllCustomers());
@@ -46,6 +47,7 @@ public class CustomerScreen implements Initializable {
         customerTableDivisionID.setCellValueFactory(new PropertyValueFactory<>("division_id"));
     }
 
+    /** Transitions to main screen.*/
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -55,6 +57,7 @@ public class CustomerScreen implements Initializable {
         stage.show();
     }
 
+    /** Transitions to add customer screen.*/
     public void toAddCustomerScreen(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CustomerAddScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -64,6 +67,7 @@ public class CustomerScreen implements Initializable {
         stage.show();
     }
 
+    /** Transitions to modify customer screen.*/
     public void onModifyButton(ActionEvent actionEvent) throws IOException {
         try {
             CustomerModifyScreen.itemToModify = customerTable.getSelectionModel().getSelectedItem();
@@ -83,6 +87,7 @@ public class CustomerScreen implements Initializable {
         }
     }
 
+    /** Deletes selected customer from database if no associated appointments exist.*/
     public void onDeleteButton(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Customer");

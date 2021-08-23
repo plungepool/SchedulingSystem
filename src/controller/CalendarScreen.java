@@ -3,7 +3,6 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -13,14 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Customer;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Controller for calendar screen. */
 public class CalendarScreen implements Initializable {
     public TableView<Appointment> monthlyAppointmentsTable;
     public TableColumn<Object, Object> monthlyAppointmentsTableID;
@@ -50,6 +48,7 @@ public class CalendarScreen implements Initializable {
     public ComboBox<String> weeklyCombo;
     ObservableList<String> weeks = FXCollections.observableArrayList();
 
+    /** Fills tableviews with appointments and sets comboboxes. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         monthlyAppointmentsTable.setItems(Appointment.getAllAppointments());
@@ -79,6 +78,7 @@ public class CalendarScreen implements Initializable {
         weeklyCombo.setItems(weeks);
     }
 
+    /** Transitions to main screen.*/
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -88,6 +88,7 @@ public class CalendarScreen implements Initializable {
         stage.show();
     }
 
+    /** Filters appointments by month.*/
     public void monthlyFilterTable() {
         if (monthlyCombo.getValue() != null) {
             String chosenMonth = monthlyCombo.getValue();
@@ -95,6 +96,7 @@ public class CalendarScreen implements Initializable {
         }
     }
 
+    /** Filters appointments by week.*/
     public void weeklyFilterTable() {
         if (weeklyCombo.getValue() != null) {
             String chosenWeek = weeklyCombo.getValue();
@@ -102,14 +104,17 @@ public class CalendarScreen implements Initializable {
         }
     }
 
+    /** Actions when monthly tab is selected.*/
     public void onTabSwitchToMonthly() {
         monthlyAppointmentsTable.getSelectionModel().clearSelection();
     }
 
+    /** Actions when weekly tab is selected.*/
     public void onTabSwitchToWeekly() {
         weeklyAppointmentsTable.getSelectionModel().clearSelection();
     }
 
+    /** Transitions to add appointment screen.*/
     public void toAddAppointmentScreen(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CalendarAddScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -119,6 +124,7 @@ public class CalendarScreen implements Initializable {
         stage.show();
     }
 
+    /** Transitions to modify appointment screen.*/
     public void onModifyButton(ActionEvent actionEvent) {
         try {
             if (monthlyAppointmentsTable.getSelectionModel().getSelectedItem() != null) {
@@ -143,6 +149,7 @@ public class CalendarScreen implements Initializable {
         }
     }
 
+    /** Deletes selected appointment from database.*/
     public void onDeleteButton(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete Appointment");

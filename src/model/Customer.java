@@ -3,7 +3,6 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import utils.DBConnection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,6 +73,8 @@ public class Customer {
         this.division_id = division_id;
     }
 
+    /** Gets list of all customers.
+     @return Returns observable list of all customer data.*/
     public static ObservableList<Customer> getAllCustomers() {
         ObservableList<Customer> customersList = FXCollections.observableArrayList();
 
@@ -100,6 +101,8 @@ public class Customer {
         return customersList;
     }
 
+    /** Adds new customer to customer database.
+     @param newCustomer New customer to add to database. */
     public static void addNewCustomer(Customer newCustomer){
         try {
             String sql = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Division_ID) " +
@@ -113,6 +116,8 @@ public class Customer {
         }
     }
 
+    /** Deletes new customer to customer database.
+     @param itemToDelete Customer to delete in database. */
     public static void deleteCustomer(Customer itemToDelete) {
         try {
             int customerIdToDelete = itemToDelete.getId();

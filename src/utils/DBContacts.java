@@ -6,7 +6,11 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/** Class for database functions related to Contacts.*/
 public class DBContacts {
+
+    /** Gets list of all contacts.
+     @return Returns observable lists of all available contacts. */
     public static ObservableList<Contacts> getAllContacts() {
         ObservableList<Contacts> contactsList = FXCollections.observableArrayList();
 
@@ -29,6 +33,9 @@ public class DBContacts {
         return contactsList;
     }
 
+    /** Gets ID of contact based on name of contact.
+     @return Returns int contact ID.
+     @param contactName String of contact name. */
     public static int getContactIdFromContactName(String contactName) {
         int contactID = 0;
         try {
@@ -46,6 +53,9 @@ public class DBContacts {
         return contactID;
     }
 
+    /** Gets name of contact based on contact ID.
+     @return Returns string name of corresponding contact.
+     @param contactID ID of contact. */
     public static String getContactNameFromContactID(int contactID) {
         String contactName = "";
         try {

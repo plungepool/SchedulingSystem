@@ -18,7 +18,6 @@ import model.Contacts;
 import model.Customer;
 import utils.DBContacts;
 import utils.DBCustomer;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -28,6 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/** Controller for add appointment screen. */
 public class CalendarAddScreen implements Initializable {
     public TextField idField;
     public TextField titleField;
@@ -40,6 +40,7 @@ public class CalendarAddScreen implements Initializable {
     public TextField startField;
     public TextField endField;
 
+    /** Fills comboboxes with items from database.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> contactsNames = FXCollections.observableArrayList();
@@ -55,7 +56,10 @@ public class CalendarAddScreen implements Initializable {
         customerCombo.setItems(customerNames);
     }
 
+    /** Creates new appointment and adds to database.*/
     public void onSaveButton(ActionEvent actionEvent) {
+        /* Lambda #1 encapsulates the necessary add appointment form checks and returns a boolean.
+           Created to improve readability of following conditional statement. */
         CheckValidityInterface notAllFieldsValid = () -> {
             return (idField.getText() == null ||
                     titleField.getText() == null ||
@@ -126,6 +130,8 @@ public class CalendarAddScreen implements Initializable {
                         LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
                         LocalDateTime thisAppointmentEnd = a.getEnd().toLocalDateTime();
 
+                        /* Lambda #2 encapsulates the needed logical checks to ensure no overlaps are created in schedule and returns a boolean.
+                            Created to improve readability of following conditional statement. */
                         CheckValidityInterface appointmentsOverlap = () -> {
                             return (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
                                     || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
@@ -180,6 +186,7 @@ public class CalendarAddScreen implements Initializable {
         }
     }
 
+    /** Transitions to main screen.*/
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CalendarScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();

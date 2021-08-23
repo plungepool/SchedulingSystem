@@ -1,5 +1,6 @@
 package model;
 
+/** This class represents a business contact.*/
 public class Contacts {
     private int id;
     private String name;

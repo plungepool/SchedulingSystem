@@ -2,18 +2,16 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 import utils.DBConnection;
-
 import java.sql.*;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
 
+/** This class represents an appointment scheduled with a customer.*/
 public class Appointment {
     private int id;
     private String title;
@@ -119,6 +117,8 @@ public class Appointment {
         this.contact_id = contact_id;
     }
 
+    /** Gets list of all appointments.
+     @return Returns observable list of all appointment data.*/
     public static ObservableList<Appointment> getAllAppointments() {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
 
@@ -149,6 +149,9 @@ public class Appointment {
         return appointmentsList;
     }
 
+    /** Gets list of all appointments by customer.
+     @return Returns observable list of all appointment data by customer.
+     @param customerID ID of customer to return appointments from. */
     public static ObservableList<Appointment> getAllAppointmentsByCustomer(int customerID) {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
 
@@ -179,6 +182,9 @@ public class Appointment {
         return appointmentsList;
     }
 
+    /** Filters appointments by scheduled month.
+     @return Returns observable list of appointment data by month.
+     @param month String of 3-letter capitalized month abbreviation to filter by. */
     public static ObservableList<Appointment> filterByMonth(String month) {
         LocalDateTime startFilter;
         LocalDateTime endFilter;
@@ -265,6 +271,9 @@ public class Appointment {
         return appointmentsList;
     }
 
+    /** Filters appointments by scheduled week.
+     @return Returns observable list of appointment data by week.
+     @param week String of capitalized week name to filter by. */
     public static ObservableList<Appointment> filterByWeek(String week) {
         Locale locale = Locale.getDefault();
         DayOfWeek firstDayOfWeek = WeekFields.of(locale).getFirstDayOfWeek();
@@ -309,6 +318,8 @@ public class Appointment {
         return appointmentsList;
     }
 
+    /** Adds new appointment to calendar.
+     @param newAppointment New appointment to add to calendar. */
     public static void addNewAppointment(Appointment newAppointment){
         try {
             String sql = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
@@ -324,6 +335,9 @@ public class Appointment {
         }
     }
 
+    /** Updates new appointment to calendar.
+     @param newAppointment New appointment information to replace in appointment being modified.
+     @param itemToModify Appointment to update in calendar. */
     public static void updateAppointment(Appointment newAppointment, Appointment itemToModify){
         try {
             String sql = "INSERT INTO appointments (Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) " +
@@ -340,6 +354,8 @@ public class Appointment {
         }
     }
 
+    /** Deletes appointment from calendar.
+     @param itemToDelete Appointment to delete from calendar. */
     public static void deleteAppointment(Appointment itemToDelete) {
         try {
             int appointmentIdToDelete = itemToDelete.getId();

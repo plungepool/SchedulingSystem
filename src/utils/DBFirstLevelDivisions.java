@@ -3,11 +3,14 @@ package utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FirstLevelDivisions;
-
 import java.sql.*;
 
+/** Class for database functions related to First Level Divisions.*/
 public class DBFirstLevelDivisions {
 
+    /** Compiles list of first level divisions based on country ID.
+     @return Returns observable list of first level divisions.
+     @param selectedCountryId ID of country to compile list of first level divisions from. */
     public static ObservableList<FirstLevelDivisions> getAllDivisionsFromCountryID(int selectedCountryId) {
         ObservableList<FirstLevelDivisions> divisionsList = FXCollections.observableArrayList();
         try {
@@ -29,6 +32,9 @@ public class DBFirstLevelDivisions {
         return divisionsList;
     }
 
+    /** Gets name of country based on selected first level division ID.
+     @return Returns string name of corresponding country.
+     @param divisionID ID of division to find associated country. */
     public static String getCountryNameFromDivisionID(int divisionID) {
         String countryName = "";
 
@@ -55,6 +61,9 @@ public class DBFirstLevelDivisions {
         return countryName;
     }
 
+    /** Gets ID of country based on name of country.
+     @return Returns int country ID.
+     @param countryName String of country name. */
     public static int getCountryIdFromCountryName(String countryName) {
         int countryID = 0;
         try {
@@ -72,6 +81,9 @@ public class DBFirstLevelDivisions {
         return countryID;
     }
 
+    /** Gets ID of division based on name of division.
+     @return Returns int division ID.
+     @param divisionName String of division name. */
     public static int getDivisionIdFromDivisionName(String divisionName) {
         int divisionID = 0;
         try {
@@ -89,6 +101,9 @@ public class DBFirstLevelDivisions {
         return divisionID;
     }
 
+    /** Gets name of division based on first level division ID.
+     @return Returns string name of corresponding division.
+     @param divisionID ID of division. */
     public static String getDivisionNameFromDivisionID(int divisionID) {
         String divisionName = "";
         try {

@@ -1,5 +1,6 @@
 package model;
 
+/** Class represents an available country.*/
 public class Countries {
     private int id;
     private String name;

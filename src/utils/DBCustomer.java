@@ -1,12 +1,13 @@
 package utils;
 
-import model.Customer;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.sql.*;
 
+/** Class for database functions related to Customers.*/
 public class DBCustomer {
+
+    /** Gets ID of customer based on name of customer.
+     @return Returns int customer ID.
+     @param customerName String of customer name. */
     public static int getCustomerIdFromCustomerName(String customerName) {
         int customerID = 0;
         try {
@@ -24,6 +25,9 @@ public class DBCustomer {
         return customerID;
     }
 
+    /** Gets name of customer based on customer ID.
+     @return Returns string name of corresponding customer.
+     @param customerID ID of customer. */
     public static String getCustomerNameFromCustomerID(int customerID) {
         String customerName = "";
         try {

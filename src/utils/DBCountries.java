@@ -6,8 +6,11 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
+/** Class for database functions related to Countries.*/
 public class DBCountries {
 
+    /** Gets list of all countries.
+     @return Returns observable lists of all available countries. */
     public static ObservableList<Countries> getAllCountries() {
         ObservableList<Countries> countriesList = FXCollections.observableArrayList();
 
@@ -29,19 +32,4 @@ public class DBCountries {
         return countriesList;
     }
 
-    public static void checkDateConversion() {
-        System.out.println("Creating date test...");
-        String sql = "SELECT Create_Date FROM countries";
-        try {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Timestamp ts = rs.getTimestamp("Create_Date");
-                System.out.println("CD: " + ts.toLocalDateTime().toString());
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

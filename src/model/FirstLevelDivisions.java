@@ -1,5 +1,6 @@
 package model;
 
+/** Class representing First Level Divisions of each available country.*/
 public class FirstLevelDivisions {
     private int id;
     private String name;

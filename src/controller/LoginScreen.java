@@ -15,14 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Appointment;
 import utils.DBConnection;
-
 import java.io.IOException;
 import java.net.URL;
-import java.nio.Buffer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
@@ -32,6 +29,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.io.*;
 
+/** Controller for login screen. */
 public class LoginScreen implements Initializable {
     public TextField usernameField;
     public TextField passwordField;
@@ -46,6 +44,7 @@ public class LoginScreen implements Initializable {
     public static String userZoneDisplayName = userZone.getDisplayName(TextStyle.FULL, defaultLocale);
     public static ResourceBundle msg = ResourceBundle.getBundle("resources/login", defaultLocale);;
 
+    /** Sets login language text and timezone information.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         locationLabel.setText(userZoneDisplayName);
@@ -57,6 +56,7 @@ public class LoginScreen implements Initializable {
         loginButton.setText(msg.getString("loginbutton"));
     }
 
+    /** Transitions to main screen.*/
     public void toMainScreen(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
@@ -66,6 +66,8 @@ public class LoginScreen implements Initializable {
         stage.show();
     }
 
+    /** Action on login attempt.
+     Validates user login and logs all login attempts to text file.*/
     public void onLoginButton(ActionEvent actionEvent) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();

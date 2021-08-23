@@ -17,7 +17,6 @@ import model.Customer;
 import model.FirstLevelDivisions;
 import utils.DBCountries;
 import utils.DBFirstLevelDivisions;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
@@ -25,6 +24,7 @@ import java.util.ResourceBundle;
 
 import static utils.DBFirstLevelDivisions.getDivisionIdFromDivisionName;
 
+/** Controller for add customers screen. */
 public class CustomerAddScreen implements Initializable {
 
     public TextField idField;
@@ -35,6 +35,7 @@ public class CustomerAddScreen implements Initializable {
     public ComboBox<String> countryCombo;
     public ComboBox<String> divisionCombo;
 
+    /** Fills comboboxes with items from database.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -44,6 +45,7 @@ public class CustomerAddScreen implements Initializable {
         countryCombo.setItems(countryNames);
     }
 
+    /** Populates division comboboxes based on country selection.*/
     public void onCountrySelect(ActionEvent actionEvent) {
         divisionCombo.getItems().clear();
         int selectedCountryId;
@@ -67,6 +69,7 @@ public class CustomerAddScreen implements Initializable {
         divisionCombo.setItems(divisionNames);
     }
 
+    /** Creates new customer and adds to database.*/
     public void onSaveButton(ActionEvent actionEvent) {
         if (nameField.getText() == null || addressField.getText() == null || postalField.getText() == null || phoneField.getText() == null || divisionCombo.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -97,6 +100,7 @@ public class CustomerAddScreen implements Initializable {
         }
     }
 
+    /** Transitions to main screen.*/
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/CustomerScreen.fxml")));
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();

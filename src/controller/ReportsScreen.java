@@ -13,10 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Contacts;
 import utils.DBConnection;
-import utils.DBContacts;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -29,6 +26,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/** Controller for reports screen. */
 public class ReportsScreen implements Initializable {
     public ComboBox<String> totalNumberType;
     public ComboBox<String> totalNumberMonth;
@@ -52,6 +50,7 @@ public class ReportsScreen implements Initializable {
     ObservableList<String> months = FXCollections.observableArrayList();
     ObservableList<String> contacts = FXCollections.observableArrayList();
 
+    /** Fills comboboxes with items from database.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -85,6 +84,7 @@ public class ReportsScreen implements Initializable {
         scheduleContact.setItems(contacts);
     }
 
+    /** Transitions to main screen.*/
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -94,6 +94,7 @@ public class ReportsScreen implements Initializable {
         stage.show();
     }
 
+    /** Calculates total number of appointments by type and month.*/
     public void onTotalNumberButton(ActionEvent actionEvent) {
         if (totalNumberType.getValue() == null || totalNumberMonth.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -173,6 +174,7 @@ public class ReportsScreen implements Initializable {
         }
     }
 
+    /** Calculates total scheduled time of appointments by type and month.*/
     public void onTotalTimeButton(ActionEvent actionEvent) {
         if (totalTimeType.getValue() == null || totalTimeMonth.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -265,6 +267,7 @@ public class ReportsScreen implements Initializable {
         }
     }
 
+    /** Creates appointment schedule for specified business contact.*/
     public void onScheduleButton(ActionEvent actionEvent) {
         if (scheduleContact.getValue() == null) {
             Alert error = new Alert(Alert.AlertType.ERROR);

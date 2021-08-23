@@ -1,5 +1,5 @@
 # SchedulingSystem
-## System for scheduling appointments
+### System for scheduling appointments
 ### Rob Duffy, v1.0, 8/23/21
 IntelliJ IDEA 2021.2
 JDK: Corretto 11.0.11

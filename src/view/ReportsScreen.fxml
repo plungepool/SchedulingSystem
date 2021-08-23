@@ -38,15 +38,15 @@
       </Button>
       <TableView fx:id="scheduleTable" layoutX="411.0" layoutY="275.0" prefHeight="200.0" prefWidth="354.0">
         <columns>
-          <TableColumn prefWidth="35.0" text="ID" />
-          <TableColumn prefWidth="40.0" text="Title" />
-            <TableColumn prefWidth="40.0" text="Description" />
-            <TableColumn prefWidth="40.0" text="Location" />
-            <TableColumn prefWidth="40.0" text="Contact" />
-            <TableColumn prefWidth="40.0" text="Type" />
-            <TableColumn prefWidth="40.0" text="Start" />
-            <TableColumn prefWidth="40.0" text="End" />
-            <TableColumn prefWidth="40.0" text="Customer ID" />
+          <TableColumn fx:id="scheduleId" prefWidth="35.0" text="ID" />
+          <TableColumn fx:id="scheduleTitle" prefWidth="40.0" text="Title" />
+            <TableColumn fx:id="scheduleDescription" prefWidth="40.0" text="Description" />
+            <TableColumn fx:id="scheduleLocation" prefWidth="40.0" text="Location" />
+            <TableColumn fx:id="scheduleContactId" prefWidth="40.0" text="Contact" />
+            <TableColumn fx:id="scheduleType" prefWidth="40.0" text="Type" />
+            <TableColumn fx:id="scheduleStart" prefWidth="40.0" text="Start" />
+            <TableColumn fx:id="scheduleEnd" prefWidth="40.0" text="End" />
+            <TableColumn fx:id="scheduleCustomerId" prefWidth="40.0" text="Customer ID" />
         </columns>
       </TableView>
       <ComboBox fx:id="totalTimeType" layoutX="33.0" layoutY="348.0" prefWidth="150.0" />

@@ -2,18 +2,20 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Contacts;
 import utils.DBConnection;
+import utils.DBContacts;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,46 +28,66 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 public class ReportsScreen implements Initializable {
     public ComboBox<String> totalNumberType;
     public ComboBox<String> totalNumberMonth;
     public Label totalNumberDisplay;
-    public ComboBox scheduleContact;
-    public TableView scheduleTable;
+    public ComboBox<String> scheduleContact;
+    public TableView<Appointment> scheduleTable;
     public ComboBox<String> totalTimeType;
     public ComboBox<String> totalTimeMonth;
     public Label totalTimeDisplay;
+    public TableColumn<Object, Object> scheduleId;
+    public TableColumn<Object, Object> scheduleTitle;
+    public TableColumn<Object, Object> scheduleDescription;
+    public TableColumn<Object, Object> scheduleLocation;
+    public TableColumn<Object, Object> scheduleContactId;
+    public TableColumn<Object, Object> scheduleType;
+    public TableColumn scheduleStart;
+    public TableColumn<Object, Object> scheduleEnd;
+    public TableColumn<Object, Object> scheduleCustomerId;
 
-    ObservableList<String> type = FXCollections.observableArrayList();
+    ObservableSet<String> type = FXCollections.observableSet();
     ObservableList<String> months = FXCollections.observableArrayList();
+    ObservableList<String> contacts = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            String sql = "SELECT * FROM appointments";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement((sql));
-            ResultSet rs = ps.executeQuery();
+            String sqlA = "SELECT * FROM appointments";
+            PreparedStatement psA = DBConnection.getConnection().prepareStatement((sqlA));
+            ResultSet rsA = psA.executeQuery();
 
-            while (rs.next()) {
-                type.add(rs.getString("Type"));
+            while (rsA.next()) {
+                type.add(rsA.getString("Type"));
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        totalNumberType.setItems(type);
-        totalTimeType.setItems(type);
+        totalNumberType.setItems(FXCollections.observableArrayList(type));
+        totalTimeType.setItems(FXCollections.observableArrayList(type));
         months.addAll("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
         totalNumberMonth.setItems(months);
         totalTimeMonth.setItems(months);
 
+        try {
+            String sqlC = "SELECT * FROM contacts";
+            PreparedStatement psC = DBConnection.getConnection().prepareStatement((sqlC));
+            ResultSet rsC = psC.executeQuery();
+
+            while (rsC.next()) {
+                contacts.add(rsC.getString("Contact_Name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        scheduleContact.setItems(contacts);
     }
 
     public void onBackButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 800, 500);
         stage.setTitle("SchedulingSystem");
         stage.setScene(scene);
@@ -79,12 +101,10 @@ public class ReportsScreen implements Initializable {
             error.setHeaderText("Error: Please select both type and month.");
             error.setContentText("Press ok to retry.");
             error.showAndWait();
-        }
-
-        else {
+        } else {
             LocalDateTime startFilter;
             LocalDateTime endFilter;
-            switch(totalNumberMonth.getValue()) {
+            switch (totalNumberMonth.getValue()) {
                 case "JAN":
                     startFilter = LocalDateTime.of(2021, Month.JANUARY, 1, 0, 0, 0);
                     endFilter = LocalDateTime.of(2021, Month.JANUARY, 31, 23, 59, 59);
@@ -146,15 +166,11 @@ public class ReportsScreen implements Initializable {
                 while (rs.next()) {
                     appointmentCount = rs.getInt(1);
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             totalNumberDisplay.setText(String.valueOf(appointmentCount));
         }
-    }
-
-    public void onScheduleButton(ActionEvent actionEvent) {
     }
 
     public void onTotalTimeButton(ActionEvent actionEvent) {
@@ -164,12 +180,10 @@ public class ReportsScreen implements Initializable {
             error.setHeaderText("Error: Please select both type and month.");
             error.setContentText("Press ok to retry.");
             error.showAndWait();
-        }
-
-        else {
+        } else {
             LocalDateTime startFilter;
             LocalDateTime endFilter;
-            switch(totalTimeMonth.getValue()) {
+            switch (totalTimeMonth.getValue()) {
                 case "JAN":
                     startFilter = LocalDateTime.of(2021, Month.JANUARY, 1, 0, 0, 0);
                     endFilter = LocalDateTime.of(2021, Month.JANUARY, 31, 23, 59, 59);
@@ -233,16 +247,14 @@ public class ReportsScreen implements Initializable {
                     LocalDateTime thisAppointmentEnd = rs.getTimestamp("End").toLocalDateTime();
                     long timeDifference = ChronoUnit.SECONDS.between(thisAppointmentStart, thisAppointmentEnd);
                     appointmentTimeSeconds = appointmentTimeSeconds + timeDifference;
-                    System.out.println(appointmentTimeSeconds);
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             int hours = 0;
-            int minutes = ((int)appointmentTimeSeconds) / 60;
-            appointmentTimeSeconds = appointmentTimeSeconds - minutes*60;
-            int seconds = ((int)appointmentTimeSeconds);
+            int minutes = ((int) appointmentTimeSeconds) / 60;
+            appointmentTimeSeconds = appointmentTimeSeconds - minutes * 60;
+            int seconds = ((int) appointmentTimeSeconds);
 
             if (minutes > 60) {
                 hours = minutes / 60;
@@ -250,6 +262,66 @@ public class ReportsScreen implements Initializable {
             }
 
             totalTimeDisplay.setText(hours + "h " + minutes + "m " + seconds + "s");
+        }
+    }
+
+    public void onScheduleButton(ActionEvent actionEvent) {
+        if (scheduleContact.getValue() == null) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Error: Please select a contact.");
+            error.setContentText("Press ok to retry.");
+            error.showAndWait();
+        } else {
+            String contactName = scheduleContact.getValue();
+            int contactId = 0;
+
+            try {
+                String sqlC = "SELECT * FROM contacts WHERE Contact_Name = '" + scheduleContact.getValue() + "'";
+                PreparedStatement psC = DBConnection.getConnection().prepareStatement((sqlC));
+                ResultSet rsC = psC.executeQuery();
+                while (rsC.next()) {
+                    contactId = rsC.getInt(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
+            try {
+                String sqlA = "SELECT * FROM appointments WHERE Contact_ID = " + contactId;
+                PreparedStatement psA = DBConnection.getConnection().prepareStatement((sqlA));
+                ResultSet rsA = psA.executeQuery();
+                while (rsA.next()) {
+                    int id = rsA.getInt("Appointment_ID");
+                    String title = rsA.getString("Title");
+                    String description = rsA.getString("Description");
+                    String location = rsA.getString("Location");
+                    String type = rsA.getString("Type");
+                    Timestamp start = rsA.getTimestamp("Start");
+                    Timestamp end = rsA.getTimestamp("End");
+                    int customer_id = rsA.getInt("Customer_ID");
+                    int user_id = rsA.getInt("User_ID");
+                    int contact_id = rsA.getInt("Contact_ID");
+
+                    Appointment a = new Appointment(id, title, description, location, type, start, end, customer_id, user_id, contact_id);
+                    contactAppointments.add(a);
+                }
+                scheduleTable.setItems(contactAppointments);
+                scheduleId.setCellValueFactory(new PropertyValueFactory<>("id"));
+                scheduleTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+                scheduleDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+                scheduleLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+                scheduleContactId.setCellValueFactory(new PropertyValueFactory<>("contact_id"));
+                scheduleType.setCellValueFactory(new PropertyValueFactory<>("type"));
+                scheduleStart.setCellValueFactory(new PropertyValueFactory<>("start"));
+                scheduleEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
+                scheduleCustomerId.setCellValueFactory(new PropertyValueFactory<>("customer_id"));
+
+                scheduleTable.getSortOrder().add(scheduleStart);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

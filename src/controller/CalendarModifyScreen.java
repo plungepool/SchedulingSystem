@@ -73,7 +73,19 @@ public class CalendarModifyScreen implements Initializable {
     }
 
     public void onSaveButton(ActionEvent actionEvent) {
-        if (idField.getText() == null || titleField.getText() == null || descriptionField.getText() == null || contactCombo.getValue() == null || locationField.getText() == null || typeField.getText() == null || datePicker.getChronology() == null || startField.getText() == null || endField.getText() == null) {
+        CheckValidityInterface notAllFieldsValid = () -> {
+            return (idField.getText() == null ||
+                    titleField.getText() == null ||
+                    descriptionField.getText() == null ||
+                    contactCombo.getValue() == null ||
+                    locationField.getText() == null ||
+                    typeField.getText() == null ||
+                    datePicker.getChronology() == null ||
+                    startField.getText() == null ||
+                    endField.getText() == null);
+        };
+
+        if (notAllFieldsValid.checkValidity()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("Error: Invalid input.");
@@ -130,13 +142,17 @@ public class CalendarModifyScreen implements Initializable {
                         LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
                         LocalDateTime thisAppointmentEnd = a.getEnd().toLocalDateTime();
 
-                        if (a.getId() != itemToModify.getId()) {
-                            if((newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
+                        CheckValidityInterface appointmentsOverlap = () -> {
+                            return (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
                                     || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
                                     || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
                                     || (thisAppointmentStart.isAfter(newAppointmentStart) && thisAppointmentEnd.isBefore(newAppointmentEnd))
                                     || newAppointmentStart.equals(thisAppointmentStart) || newAppointmentEnd.equals(thisAppointmentEnd)
-                                    || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart)){
+                                    || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart);
+                        };
+
+                        if (a.getId() != itemToModify.getId()) {
+                            if(appointmentsOverlap.checkValidity()){
                                 overlapFlag = true;
                                 Alert error = new Alert(Alert.AlertType.ERROR);
                                 error.setTitle("Error");

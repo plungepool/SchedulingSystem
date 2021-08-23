@@ -21,7 +21,6 @@ import utils.DBCustomer;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -57,7 +56,19 @@ public class CalendarAddScreen implements Initializable {
     }
 
     public void onSaveButton(ActionEvent actionEvent) {
-        if (idField.getText() == null || titleField.getText() == null || descriptionField.getText() == null || contactCombo.getValue() == null || locationField.getText() == null || typeField.getText() == null || datePicker.getChronology() == null || startField.getText() == null || endField.getText() == null) {
+        CheckValidityInterface notAllFieldsValid = () -> {
+            return (idField.getText() == null ||
+                    titleField.getText() == null ||
+                    descriptionField.getText() == null ||
+                    contactCombo.getValue() == null ||
+                    locationField.getText() == null ||
+                    typeField.getText() == null ||
+                    datePicker.getChronology() == null ||
+                    startField.getText() == null ||
+                    endField.getText() == null);
+        };
+
+        if (notAllFieldsValid.checkValidity()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("Error: Invalid input.");
@@ -110,16 +121,21 @@ public class CalendarAddScreen implements Initializable {
                     customerAppointments.addAll(Appointment.getAllAppointmentsByCustomer(customerID));
                     LocalDateTime newAppointmentStart = appointmentStartZDT.toLocalDateTime();
                     LocalDateTime newAppointmentEnd = appointmentEndZDT.toLocalDateTime();
+
                     for (Appointment a : customerAppointments) {
                         LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
                         LocalDateTime thisAppointmentEnd = a.getEnd().toLocalDateTime();
 
-                        if((newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
-                            || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
-                            || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
-                            || (thisAppointmentStart.isAfter(newAppointmentStart) && thisAppointmentEnd.isBefore(newAppointmentEnd))
-                            || newAppointmentStart.equals(thisAppointmentStart) || newAppointmentEnd.equals(thisAppointmentEnd)
-                            || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart)){
+                        CheckValidityInterface appointmentsOverlap = () -> {
+                            return (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
+                                    || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
+                                    || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
+                                    || (thisAppointmentStart.isAfter(newAppointmentStart) && thisAppointmentEnd.isBefore(newAppointmentEnd))
+                                    || newAppointmentStart.equals(thisAppointmentStart) || newAppointmentEnd.equals(thisAppointmentEnd)
+                                    || newAppointmentStart.equals(thisAppointmentEnd) || newAppointmentEnd.equals(thisAppointmentStart);
+                        };
+
+                        if(appointmentsOverlap.checkValidity()){
                             overlapFlag = true;
                             Alert error = new Alert(Alert.AlertType.ERROR);
                             error.setTitle("Error");

@@ -18,9 +18,11 @@ import utils.DBConnection;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.Buffer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
@@ -28,6 +30,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.io.*;
 
 public class LoginScreen implements Initializable {
     public TextField usernameField;
@@ -66,6 +69,7 @@ public class LoginScreen implements Initializable {
     public void onLoginButton(ActionEvent actionEvent) throws IOException {
         String username = usernameField.getText();
         String password = passwordField.getText();
+        String loginAttempt = "FAILED";
 
         try {
             String sql = "SELECT User_ID FROM users WHERE User_Name = \"" + username + "\" AND Password = \"" + password + "\"";
@@ -74,6 +78,7 @@ public class LoginScreen implements Initializable {
             rs.next();
 
             if (rs.getInt("User_ID") > 0) {
+                loginAttempt = "SUCCESS";
                 ObservableList<Appointment> customerAppointments = FXCollections.observableArrayList();
                 customerAppointments.addAll(Appointment.getAllAppointments());
                 LocalDateTime currentTime = LocalDateTime.now();
@@ -113,6 +118,16 @@ public class LoginScreen implements Initializable {
             error.setHeaderText(msg.getString("errorHeader"));
             error.setContentText(msg.getString("errorContent"));
             error.showAndWait();
+        }
+        try {
+            FileWriter fw = new FileWriter("login_activity.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter log = new PrintWriter(bw);
+            log.println("[" + LocalDateTime.now() + "] - User: " + username + " - " + loginAttempt);
+            log.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

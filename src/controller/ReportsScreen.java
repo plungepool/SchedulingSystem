@@ -253,7 +253,7 @@ public class ReportsScreen implements Initializable {
             }
             int hours = 0;
             int minutes = ((int) appointmentTimeSeconds) / 60;
-            appointmentTimeSeconds = appointmentTimeSeconds - minutes * 60;
+            appointmentTimeSeconds = appointmentTimeSeconds - (minutes * 60);
             int seconds = ((int) appointmentTimeSeconds);
 
             if (minutes > 60) {

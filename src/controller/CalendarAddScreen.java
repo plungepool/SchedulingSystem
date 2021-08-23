@@ -56,11 +56,13 @@ public class CalendarAddScreen implements Initializable {
         customerCombo.setItems(customerNames);
     }
 
-    /** Creates new appointment and adds to database.*/
+    /** Creates new appointment and adds to database.
+     * Lambda #1 on line 65 encapsulates the necessary add appointment form checks and returns a boolean.
+     * Created to improve readability of line 94 conditional statement.
+     * Lambda #2 on line 137 encapsulates the needed logical checks to ensure no overlaps are created in schedule and returns a boolean.
+     * Created to improve readability of following conditional statement. */
     public void onSaveButton(ActionEvent actionEvent) {
-        /* Lambda #1 encapsulates the necessary add appointment form checks and returns a boolean.
-           Created to improve readability of following conditional statement. */
-        CheckValidityInterface notAllFieldsValid = () -> {
+        CheckValidityInterface notAllFieldsValid = () -> { //Lambda #1
             return (idField.getText() == null ||
                     titleField.getText() == null ||
                     descriptionField.getText() == null ||
@@ -130,9 +132,7 @@ public class CalendarAddScreen implements Initializable {
                         LocalDateTime thisAppointmentStart = a.getStart().toLocalDateTime();
                         LocalDateTime thisAppointmentEnd = a.getEnd().toLocalDateTime();
 
-                        /* Lambda #2 encapsulates the needed logical checks to ensure no overlaps are created in schedule and returns a boolean.
-                            Created to improve readability of following conditional statement. */
-                        CheckValidityInterface appointmentsOverlap = () -> {
+                        CheckValidityInterface appointmentsOverlap = () -> { //Lambda #2
                             return (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentStart.isBefore(thisAppointmentEnd))
                                     || (newAppointmentEnd.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))
                                     || (newAppointmentStart.isAfter(thisAppointmentStart) && newAppointmentEnd.isBefore(thisAppointmentEnd))

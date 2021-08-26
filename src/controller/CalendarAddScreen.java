@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contacts;
 import model.Customer;
+import model.User;
 import utils.DBContacts;
 import utils.DBCustomer;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class CalendarAddScreen implements Initializable {
     public DatePicker datePicker;
     public TextField startField;
     public TextField endField;
+    public ComboBox<String> userCombo;
 
     /** Fills comboboxes with items from database.*/
     @Override
@@ -54,6 +56,12 @@ public class CalendarAddScreen implements Initializable {
             customerNames.add(cus.getName());
         }
         customerCombo.setItems(customerNames);
+
+        ObservableList<String> userNames = FXCollections.observableArrayList();
+        for (User u : User.getAllUsers()) {
+            userNames.add(u.getName());
+        }
+        userCombo.setItems(userNames);
     }
 
     /** Creates new appointment and adds to database.
@@ -71,7 +79,8 @@ public class CalendarAddScreen implements Initializable {
                     typeField.getText() == null ||
                     datePicker.getChronology() == null ||
                     startField.getText() == null ||
-                    endField.getText() == null);
+                    endField.getText() == null ||
+                    userCombo.getValue() == null);
         };
 
         if (notAllFieldsValid.checkValidity()) {
@@ -117,7 +126,7 @@ public class CalendarAddScreen implements Initializable {
                 else {
                     int contactID = DBContacts.getContactIdFromContactName(contactCombo.getValue());
                     int customerID = DBCustomer.getCustomerIdFromCustomerName(customerCombo.getValue());
-                    int userID = 1;
+                    int userID = User.getUserIdFromUserName(userCombo.getValue());
                     Timestamp appointmentStartUTC = Timestamp.valueOf(appointmentStart.plusSeconds(-1 * appointmentStartZDT.getOffset().getTotalSeconds()));
                     Timestamp appointmentEndUTC = Timestamp.valueOf(appointmentEnd.plusSeconds(-1 * appointmentEndZDT.getOffset().getTotalSeconds()));
 

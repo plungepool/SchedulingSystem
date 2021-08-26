@@ -37,6 +37,7 @@ public class CalendarModifyScreen implements Initializable {
     public DatePicker datePicker;
     public TextField startField;
     public TextField endField;
+    public ComboBox<String> userCombo;
 
     public static Appointment itemToModify;
 
@@ -71,6 +72,14 @@ public class CalendarModifyScreen implements Initializable {
 
         startField.setText(itemToModify.getStart().toString().substring(11, 19));
         endField.setText(itemToModify.getEnd().toString().substring(11, 19));
+
+        ObservableList<String> userNames = FXCollections.observableArrayList();
+        for (User u : User.getAllUsers()) {
+            userNames.add(u.getName());
+        }
+        userCombo.setItems(userNames);
+        String userName = User.getUserNameFromUserID(itemToModify.getUser_id());
+        userCombo.setValue(userName);
     }
 
     /** Replaces appointment with modified version in database.
@@ -88,7 +97,8 @@ public class CalendarModifyScreen implements Initializable {
                     typeField.getText() == null ||
                     datePicker.getChronology() == null ||
                     startField.getText() == null ||
-                    endField.getText() == null);
+                    endField.getText() == null ||
+                    userCombo.getValue() == null);
         };
 
         if (notAllFieldsValid.checkValidity()) {
@@ -134,7 +144,7 @@ public class CalendarModifyScreen implements Initializable {
                 else {
                     int contactID = DBContacts.getContactIdFromContactName(contactCombo.getValue());
                     int customerID = DBCustomer.getCustomerIdFromCustomerName(customerCombo.getValue());
-                    int userID = 1;
+                    int userID = User.getUserIdFromUserName(userCombo.getValue());
                     Timestamp appointmentStartUTC = Timestamp.valueOf(appointmentStart.plusSeconds(-1 * appointmentStartZDT.getOffset().getTotalSeconds()));
                     Timestamp appointmentEndUTC = Timestamp.valueOf(appointmentEnd.plusSeconds(-1 * appointmentEndZDT.getOffset().getTotalSeconds()));
 

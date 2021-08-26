@@ -85,5 +85,11 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <Label layoutX="110.0" layoutY="423.0" text="User:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="userCombo" layoutX="63.0" layoutY="445.0" prefHeight="25.0" prefWidth="131.0" />
    </children>
 </AnchorPane>

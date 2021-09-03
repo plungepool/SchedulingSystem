@@ -14,3 +14,9 @@ MySQL Driver: Maven mysql-connector-java:8.0.22
 
 ## Additional Report: Total appointment time
 Included additonal report type that calculates total scheduled appointment time displated in hours/minutes/seconds based on specified appointment type and month.
+
+## Screenshots
+![scheduling1](https://user-images.githubusercontent.com/54759532/131930754-94aaaca5-9c29-4382-960e-42d911633a4f.jpg)
+![scheduling2](https://user-images.githubusercontent.com/54759532/131930758-9d69ac8b-61ea-4ec2-b4fe-9d0b318c4798.jpg)
+![scheduling3](https://user-images.githubusercontent.com/54759532/131930766-4bdbc066-e538-4639-a15e-9da53cb6bc00.jpg)
+![scheduling4](https://user-images.githubusercontent.com/54759532/131930769-1385d619-99ad-40be-ace4-0f03274c6ac1.jpg)
